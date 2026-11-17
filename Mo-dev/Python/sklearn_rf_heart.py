@@ -8,7 +8,7 @@ import sklearn.tree as tree
 import emlearn
 
 df = pd.read_csv('data/heart/data_cleaned_up.csv')
-df["rnd"] = np.random.rand(len(df))
+#df["rnd"] = np.random.rand(len(df))
 x = df.drop('num', axis=1)
 y = df['num'].values
 
@@ -36,6 +36,6 @@ np.savetxt('data/heart/scaler_scale.csv', scaler.scale_, delimiter=',')
 
 cmodel = emlearn.convert(model, method='inline')
 cmodel.save(file="data/heart/heart_rf_model.csv", name='rf', format='csv')
-cmodel.save(file='data/heart/heart_rf_model.h', name='breast_cancer_rf')
+cmodel.save(file='data/heart/heart_rf_model.h', name='rf_predict')
 
 tree.export_graphviz(model.estimators_[0], out_file='data/heart/tree.dot', feature_names=x.columns, class_names=["0", "1"])
