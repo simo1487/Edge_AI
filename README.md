@@ -1,20 +1,20 @@
 # Edge_AI
 
-Projet d'apprentissage de l'**Edge AI** : entraîner des modèles de machine learning sur PC, puis les exécuter directement sur des microcontrôleurs (ESP32), sans serveur ni connexion Internet.
+**Edge AI** project: machine learning models are trained on a PC, then run directly on microcontrollers (ESP32), with no server or Internet connection.
 
-## Intérêt
+## Why Edge AI
 
-Faire tourner l'IA « au bord » (sur l'objet lui-même) plutôt que dans le cloud permet :
+Running AI at the edge (on the device itself) instead of in the cloud brings:
 
-- **Latence faible** : la décision est prise localement, en quelques millisecondes.
-- **Confidentialité** : les données (ex. médicales) ne quittent pas l'appareil.
-- **Autonomie et faible consommation** : pas de réseau nécessaire, matériel bon marché.
+- **Low latency**: decisions are made locally, within milliseconds.
+- **Privacy**: data (e.g. medical) never leaves the device.
+- **Autonomy and low power**: no network required, inexpensive hardware.
 
-La contrainte principale est la taille : un ESP32 n'a que ~320 Ko de RAM. Le projet explore donc comment obtenir des modèles **précis mais légers** (choix des variables, profondeur et nombre d'arbres, quantification).
+The main constraint is size: an ESP32 only has ~320 KB of RAM. The project therefore focuses on building models that are **accurate yet lightweight** (feature selection, tree depth and count, quantization).
 
-## Démarche
+## Workflow
 
-1. **Entraînement en Python** (`Mo-dev/Python/`) avec scikit-learn : Random Forest, KNN, régression… sur plusieurs jeux de données (maladie cardiaque, cancer du sein, MNIST, etc. dans `Mo-dev/data/`).
-2. **Analyse** : scores train/test, importance des variables, réduction du modèle.
-3. **Export pour l'embarqué** : conversion du modèle en code C avec [emlearn](https://github.com/emlearn/emlearn) et sauvegarde des paramètres de normalisation.
-4. **Déploiement** sur ESP32 (PlatformIO / Arduino) pour faire l'inférence sur la carte.
+1. **Training in Python** (`Mo-dev/Python/`) with scikit-learn: Random Forest, KNN, regression… on several datasets (heart disease, breast cancer, MNIST, etc. in `Mo-dev/data/`).
+2. **Analysis**: train/test scores, feature importance, model size reduction.
+3. **Export for embedded targets**: conversion of the model to C code with [emlearn](https://github.com/emlearn/emlearn), plus export of the normalization parameters.
+4. **Deployment** on ESP32 (PlatformIO / Arduino) to run inference on the board.
