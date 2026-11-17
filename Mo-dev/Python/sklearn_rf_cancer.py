@@ -19,7 +19,7 @@ x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 print(x_train.shape)
 
-model = rf.RandomForestClassifier(n_estimators=100, random_state=42)
+model = rf.RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
 model.fit(x_train, y_train)
 print(model.score(x_train, y_train))
 print(model.score(x_test, y_test))
