@@ -1,0 +1,45 @@
+import sklearn.preprocessing as pp
+import sklearn.model_selection as ms
+import tensorflow as tf
+import pandas as pd
+import numpy as np
+
+tf.random.set_seed(42)
+np.random.seed(42)
+
+df = pd.read_csv('data/breast-cancer/data.csv')
+x = df.drop(['id', 'diagnosis'], axis=1)
+y = df['diagnosis'].values
+
+xtrain, xtest, ytrain, ytest = ms.train_test_split(x, y, train_size=0.8, test_size=0.2, random_state=42)
+
+scaler = pp.StandardScaler()
+scaler.fit(xtrain)
+xtrain = scaler.transform(xtrain)
+xtest = scaler.transform(xtest)
+
+ytrain = tf.keras.utils.to_categorical(ytrain) # y train before shape = 530 data -> after shape = (530, 2)
+ytest = tf.keras.utils.to_categorical(ytest)
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(20, activation="relu", input_shape=(x.shape[1],)),
+    tf.keras.layers.Dropout(0.2), #drop 20% de neuronne
+    tf.keras.layers.Dense(10, activation="relu"),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(2, activation="softmax")  # sigmoid not supported by tinymaix
+  ])
+
+model.compile(loss="categorical_crossentropy", optimizer="rmsprop", metrics=['accuracy'])
+model.summary()
+
+history = model.fit(xtrain, ytrain, epochs=10, batch_size=10, validation_split=0.2)
+eval = model.evaluate(xtrain, ytrain)
+print(eval)
+eval = model.evaluate(xtest, ytest)
+print(eval)
+print(f"Total accuracy: {history.history['accuracy'][-1]*100:.1f}%")
+
+model.save("data/breast-cancer/cancer_mlp.h5")
+
+
+
